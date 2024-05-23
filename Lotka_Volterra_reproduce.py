@@ -36,7 +36,7 @@ net.apply_feature_transform(input_tranform)
 net.apply_output_transform(hardconstraints)
 #model
 model=xd.Model(data,net)
-model.compile("sgd",lr=0.001)
+model.compile("adam",lr=0.001)
 loss_history, train_state = model.train(iterations=5000)
 model.compile("L-BFGS")
 loss_history, train_state = model.train()

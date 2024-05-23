@@ -22,9 +22,9 @@ plt.show()
 
 class Mymodel(tf.Module):
     def __init__(self,**kwargs):
-        self.w=tf.Variable(-700000.0)
-        self.b=tf.Variable(20896.0)
-        self.q=tf.Variable(100000.0)
+        self.w=tf.Variable(-7.0)
+        self.b=tf.Variable(2.0)
+        self.q=tf.Variable(10.0)
     def __call__(self,x):
         return self.w*(x**2)+self.q*x+self.b
 model=Mymodel()

@@ -51,7 +51,7 @@ net = dde.nn.FNN([1] + [100] * 13 + [n], "sin", "Glorot normal")
 model = dde.Model(data, net)
 
 # Compile and train the model
-model.compile("adam", lr=0.0019515584134263103,metrics=["accuracy"],loss_weights=[0.01,1,1,1])
+model.compile("adam", lr=0.001,metrics=["accuracy"],loss_weights=[0.01,1,1,1])
 losshistory, train_state = model.train(iterations=10000)
 dde.saveplot(losshistory, train_state)
 # Evaluate the model
