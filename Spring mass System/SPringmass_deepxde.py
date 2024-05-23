@@ -8,7 +8,7 @@ def ode(x,y):
     y_dder=xd.grad.hessian(y,x,i=0)
     return m*y_dder + y_der*c+y*k
 temp=(4*m*k)**(1/2)
-w1=((4*m*k-c**2)**(1/2))/2*m
+w1=((4*m*k-c**2)**(1/2))/2/m
 y0=float(input("y(0)"))
 ydash0=float(input("y'(0)"))
 c1=0
@@ -17,22 +17,22 @@ def soln(t):
     if c<temp:
         global c1,c2
         c1=y0
-        c2=(ydash0+((c1*c*w1)/2*m))/w1
+        c2=(ydash0+((c1*c)/2/m))/w1
         return np.exp(-c*t/(2*m))*(c1*np.cos(w1*t)+c2*np.sin(w1*t))
     elif c==temp:
         c1=y0
-        c2=ydash0+c*c1
+        c2=ydash0+(c*c1/2/m)
         return np.exp(-c*t/(2*m))*(c1+c2*t)
     elif c>temp:
-        r1=(-c-np.sqrt(c**2-4*m*k))/2*m
-        r2=(-c+np.sqrt(c**2-4*m*k))/2*m
+        r1=(-c-np.sqrt(c**2-4*m*k))/2/m
+        r2=(-c+np.sqrt(c**2-4*m*k))/2/m
         c1=(ydash0-r2*y0)/(r1-r2)
         c2=(ydash0-r1*y0)/(r2-r1)
         return c1*np.exp(r1*t)+c2*np.exp(r2*t)
 geom=xd.geometry.TimeDomain(0,10)
 def boundary(x,on_initial):
     return xd.utils.isclose(x[0],0)and on_initial
-ic1=xd.icbc.IC(geom,lambda x:c1,boundary)
+ic1=xd.icbc.IC(geom,lambda x:y0,boundary)
 def error(inputs,outputs,X):
     return xd.grad.jacobian(outputs,inputs,i=0)-ydash0
 ic2=xd.icbc.OperatorBC(geom,error, boundary)

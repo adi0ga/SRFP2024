@@ -24,9 +24,9 @@ def multi_dof_system(t, u):
 # Define initial conditions
 def initial_conditions(X):
     u0 = np.zeros((n,))
-    v0 = np.zeros((n,))
-    return np.concatenate([u0, v0])
-
+    #v0 = np.zeros((n,))
+   # return np.concatenate([u0, v0])
+    return u0
 geom = dde.geometry.TimeDomain(0, 10)
 def boundary(x,on_initial):
     return x[0]==0 and on_initial
@@ -47,15 +47,15 @@ data = dde.data.TimePDE(
 )
 
 # Define neural network
-net = dde.nn.FNN([1] + [76] * 6 + [n], "sin", "Glorot normal")
+net = dde.nn.FNN([1] + [100] * 13 + [n], "sin", "Glorot normal")
 model = dde.Model(data, net)
 
 # Compile and train the model
-model.compile("adam", lr=0.001,metrics=["accuracy"],loss_weights=[0.01,1,1,1])
+model.compile("adam", lr=0.0019515584134263103,metrics=["accuracy"],loss_weights=[0.01,1,1,1])
 losshistory, train_state = model.train(iterations=10000)
 dde.saveplot(losshistory, train_state)
 # Evaluate the model
-X = np.linspace(0, 1, 100).reshape(-1, 1)
+X = np.linspace(0, 10, 100).reshape(-1, 1)
 y_pred = model.predict(X)
 
 # Plot the results
