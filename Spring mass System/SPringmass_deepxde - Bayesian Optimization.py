@@ -5,7 +5,8 @@ from skopt.plots import plot_convergence,plot_objective
 from skopt.utils import use_named_args
 from skopt.space import Integer,Real,Categorical
 from skopt import gp_minimize
-minimize="train loss"
+import time
+minimize="test loss"
 k=float(input("Spring constant"))
 c=float(input("Damping consatnt"))
 m=float(input("mass"))
@@ -79,12 +80,15 @@ def fitness(num_layers,size_layers,activation,lr,iterations):
     config=[num_layers,size_layers,activation,lr,iterations]
     print("Run No:",ITERATION+1)
     print(config)
+    t1=time.time()
     model=build_model(config)
     loss=train_model(model, config)
+    t2=time.time()
     if np.isnan(loss):
         loss=10**9       
     ITERATION+=1
-    return loss
+    
+    return loss+0.1*(t1-t2)
 ITERATION=0
 model_optim=gp_minimize(fitness, dimensions,n_calls=15,x0=[5,64,"sigmoid",0.005,10000])
 print(model_optim.x)

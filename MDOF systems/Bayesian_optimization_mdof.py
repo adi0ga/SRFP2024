@@ -91,3 +91,4 @@ search_result=gp_minimize(func=fitness, dimensions=dimensions,acq_func="EI",n_ca
 print(search_result.x)
 plot_convergence(search_result)
 plot_objective(search_result, show_points=True, size=3.8)
+config=search_result.x

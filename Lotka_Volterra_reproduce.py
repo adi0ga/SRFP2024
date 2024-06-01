@@ -41,7 +41,6 @@ loss_history, train_state = model.train(iterations=5000)
 model.compile("L-BFGS")
 loss_history, train_state = model.train()
 xd.saveplot(loss_history, train_state, issave=True, isplot=True)
-
 #############################
 #generating original data####
 #############################
