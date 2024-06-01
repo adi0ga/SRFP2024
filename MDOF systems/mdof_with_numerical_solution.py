@@ -14,7 +14,7 @@ K = np.array([[5.0, 0.0], [-4.0, 4.0]])
 F = np.array([1.0, 0.0])
 u0=np.zeros((n,))
 v0=np.zeros((n,))
-"""
+
 def multi_dof_system(t, u):
     u = u[:,0:n]
     u=tf.cast(u,tf.float64)
@@ -53,20 +53,19 @@ def input_tranform(t):
 # Define neural network
 net = dde.nn.FNN([1] + [50]*5 + [n], "sin", "Glorot normal")
 net.apply_feature_transform(input_tranform)
-""""""def hardconstraints(t,Y):
+def hardconstraints(t,Y):
     r=Y[:,0:1]
     p=Y[:,1:2]
     return tf.concat([r*tf.tanh(t),p*tf.tanh(t)],axis=1)
 
-net.apply_output_transform(hardconstraints)"""
-"""
+net.apply_output_transform(hardconstraints)
 model = dde.Model(data, net)
 # Compile and train the model
 model.compile("adam", lr=0.001,metrics=[],loss_weights=[1,1,1,1])
-losshistory, train_state = model.train(iterations=20000)
-"""""""model.compile("L-BFGS")
+losshistory, train_state = model.train(iterations=50000)
+"""model.compile("L-BFGS")
 losshistory, train_state = model.train()
-"""""""
+"""
 dde.saveplot(losshistory, train_state)
 # Evaluate the model
 X = np.linspace(0, 50, 1001).reshape(-1, 1)
@@ -103,6 +102,7 @@ plt.plot(t,u[0],"-",label="true_1",color="black")
 plt.plot(t, u[1],"-",label="true_2")
 plt.legend()
 plt.show()
+
 """
 ##############################################
 A0=np.zeros((n,n))
@@ -118,3 +118,4 @@ Result=list(np.zeros(2*n,))
 for r in range(2*n):
     Result[r]=((np.transpose(y)[r,:]@B@F)*(x[:,r]))/-w[r]
 Solution=sum(Result)
+"""
